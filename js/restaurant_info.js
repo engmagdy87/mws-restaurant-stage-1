@@ -60,7 +60,10 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const image = document.getElementById("restaurant-img");
   image.className = "restaurant-img";
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = restaurant.name;
+  if (document.body.clientWidth <= 480)
+    image.src = DBHelper.smallImageUrlForRestaurant(restaurant);
+  else image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById("restaurant-cuisine");
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -146,7 +149,7 @@ createReviewHTML = review => {
 
   const rating = document.createElement("p");
   rating.innerHTML = `Rating: ${review.rating}`;
-  rating.style.width = "25%";
+  rating.style.width = "30%";
   rating.style.padding = "5px";
   rating.style.marginTop = "10px";
   rating.style.marginLeft = "20px";
