@@ -54,19 +54,24 @@ fetchRestaurantFromURL = callback => {
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById("restaurant-name");
   name.innerHTML = restaurant.name;
+  name.setAttribute("aria-labelledby", "restaurant-name");
 
   const address = document.getElementById("restaurant-address");
   address.innerHTML = restaurant.address;
+  address.setAttribute("aria-labelledby", "restaurant-address");
 
   const image = document.getElementById("restaurant-img");
   image.className = "restaurant-img";
   image.alt = restaurant.name;
+  image.setAttribute("aria-labelledby", "restaurant-img");
+
   if (document.body.clientWidth <= 480)
     image.src = DBHelper.smallImageUrlForRestaurant(restaurant);
   else image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById("restaurant-cuisine");
   cuisine.innerHTML = restaurant.cuisine_type;
+  cuisine.setAttribute("aria-labelledby", "restaurant-cuisine");
 
   // fill operating hours
   if (restaurant.operating_hours) {
@@ -83,6 +88,7 @@ fillRestaurantHoursHTML = (
   operatingHours = self.restaurant.operating_hours
 ) => {
   const hours = document.getElementById("restaurant-hours");
+  hours.setAttribute("aria-labelledby", "restaurant-hours");
   for (let key in operatingHours) {
     const row = document.createElement("tr");
 
@@ -103,6 +109,8 @@ fillRestaurantHoursHTML = (
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById("reviews-container");
+  container.setAttribute("aria-labelledby", "reviews-container");
+
   const title = document.createElement("h2");
   title.innerHTML = "Reviews";
   container.appendChild(title);
@@ -114,6 +122,8 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     return;
   }
   const ul = document.getElementById("reviews-list");
+  ul.setAttribute("aria-labelledby", "reviews-list");
+
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
@@ -136,6 +146,7 @@ createReviewHTML = review => {
   name.style.fontSize = "1rem";
   name.style.fontWeight = "bold";
   name.innerHTML = review.name;
+  name.setAttribute("aria-label", review.name);
   reviewHeader.appendChild(name);
 
   const date = document.createElement("p");
@@ -144,6 +155,7 @@ createReviewHTML = review => {
   date.style.width = "50%";
   date.style.color = "#BDBDBD";
   date.innerHTML = review.date;
+  date.setAttribute("aria-label", review.date);
   reviewHeader.appendChild(date);
   li.appendChild(reviewHeader);
 
@@ -159,6 +171,7 @@ createReviewHTML = review => {
   rating.style.fontWeight = "bold";
   rating.style.letterSpacing = "1px";
   rating.style.backgroundColor = "orange";
+  rating.setAttribute("aria-label", "rating", review.rating);
   li.appendChild(rating);
 
   const comments = document.createElement("p");
@@ -178,6 +191,7 @@ fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById("breadcrumb");
   const li = document.createElement("li");
   li.innerHTML = restaurant.name;
+  li.setAttribute("aria-label", restaurant.name);
   breadcrumb.appendChild(li);
 };
 

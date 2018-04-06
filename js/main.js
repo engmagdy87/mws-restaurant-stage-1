@@ -142,7 +142,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 createRestaurantHTML = restaurant => {
   const li = document.createElement("li");
-
+  li.setAttribute("aria-label", restaurant.name);
   const image = document.createElement("img");
   image.className = "restaurant-img";
   image.alt = restaurant.name;
@@ -166,7 +166,7 @@ createRestaurantHTML = restaurant => {
   const more = document.createElement("a");
   more.innerHTML = "View Details";
   // 2 is last tabIndex before restaurants list
-  more.tabIndex = restaurant.id + 3;
+  more.tabIndex = restaurant.id + 4;
   more.href = DBHelper.urlForRestaurant(restaurant);
   li.append(more);
 
