@@ -145,10 +145,15 @@ createRestaurantHTML = restaurant => {
   li.setAttribute("aria-label", restaurant.name);
   const image = document.createElement("img");
   image.className = "restaurant-img";
-  image.alt = restaurant.name;
-  if (document.body.clientWidth <= 480)
-    image.src = DBHelper.smallImageUrlForRestaurant(restaurant);
-  else image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = `restaurant ${restaurant.name}`;
+  image.setAttribute("src", `/img/normal/${restaurant.photograph}`);
+  image.setAttribute(
+    "srcset",
+    `/img/small/${restaurant.photograph} 2x, /img/normal/${
+      restaurant.photograph
+    } 3x`
+  );
+
   li.append(image);
 
   const name = document.createElement("h1");
@@ -165,8 +170,12 @@ createRestaurantHTML = restaurant => {
 
   const more = document.createElement("a");
   more.innerHTML = "View Details";
+  more.setAttribute(
+    "aria-label",
+    `view details of restaurant ${restaurant.name}`
+  );
   // 2 is last tabIndex before restaurants list
-  more.tabIndex = restaurant.id + 4;
+  more.tabIndex = restaurant.id + 5;
   more.href = DBHelper.urlForRestaurant(restaurant);
   li.append(more);
 

@@ -5,6 +5,7 @@ self.addEventListener("install", function(event) {
   //  files to be cached
   let urlsToCache = [
     "/",
+    "index.html",
     "restaurant.html",
     "css/styles.css",
     "data/restaurants.json",

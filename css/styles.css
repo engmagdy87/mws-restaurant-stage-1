@@ -324,12 +324,11 @@ nav h1 a {
   }
 
   .inside #map-container {
-    height: 40%;
+    height: 40vh;
     width: 100%;
     order: 0;
-    top: 80px;
     z-index: 10;
-    bottom: auto;
+    position: absolute;
   }
   #restaurant-container {
     padding-top: 85%;
