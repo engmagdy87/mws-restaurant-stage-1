@@ -203,6 +203,7 @@ nav.breadcrumb [aria-current="page"] {
   max-width: 100%;
   min-height: 248px;
   min-width: 100%;
+  object-fit: cover;
 }
 #restaurants-list li h2 {
   color: #f18200;
