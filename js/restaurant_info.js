@@ -25,27 +25,50 @@ window.initMap = () => {
  * Get current restaurant from page URL.
  */
 fetchRestaurantFromURL = callback => {
-  if (self.restaurant) {
-    // restaurant already fetched!
-    callback(null, self.restaurant);
-    return;
-  }
-  const id = getParameterByName("id");
-  if (!id) {
-    // no id found in URL
-    error = "No restaurant id in URL";
-    callback(error, null);
-  } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-      self.restaurant = restaurant;
-      if (!restaurant) {
-        console.error(error);
-        return;
-      }
-      fillRestaurantHTML();
-      callback(null, restaurant);
-    });
-  }
+  return new Promise((resolve, reject) => {
+    if (self.restaurant) {
+      // restaurant already fetched!
+      resolve(self.restaurant);
+    }
+
+    const id = getParameterByName("id");
+    if (!id) {
+      // no id found in URL
+      error = "No restaurant id in URL";
+      reject(error);
+    } else {
+      DBHelper.fetchRestaurantById(id)
+        .then(res => {
+          self.restaurant = res;
+          if (!restaurant) reject("error");
+          fillRestaurantHTML();
+          resolve(restaurant);
+        })
+        .catch(err => reject(err));
+    }
+  });
+
+  // if (self.restaurant) {
+  //   // restaurant already fetched!
+  //   callback(null, self.restaurant);
+  //   return;
+  // }
+  // const id = getParameterByName("id");
+  // if (!id) {
+  //   // no id found in URL
+  //   error = "No restaurant id in URL";
+  //   callback(error, null);
+  // } else {
+  //   DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+  //     self.restaurant = restaurant;
+  //     if (!restaurant) {
+  //       console.error(error);
+  //       return;
+  //     }
+  //     fillRestaurantHTML();
+  //     callback(null, restaurant);
+  //   });
+  // }
 };
 
 /**

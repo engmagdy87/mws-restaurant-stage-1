@@ -14,15 +14,12 @@ document.addEventListener("DOMContentLoaded", event => {
  * Fetch all neighborhoods and set their HTML.
  */
 fetchNeighborhoods = () => {
-  DBHelper.fetchNeighborhoods((error, neighborhoods) => {
-    if (error) {
-      // Got an error
-      console.error(error);
-    } else {
-      self.neighborhoods = neighborhoods;
+  HttpHelper.fetchNeighborhoods()
+    .then(res => {
+      self.neighborhoods = res;
       fillNeighborhoodsHTML();
-    }
-  });
+    })
+    .catch(err => console.log(err));
 };
 
 /**
@@ -42,15 +39,12 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
  * Fetch all cuisines and set their HTML.
  */
 fetchCuisines = () => {
-  DBHelper.fetchCuisines((error, cuisines) => {
-    if (error) {
-      // Got an error!
-      console.error(error);
-    } else {
-      self.cuisines = cuisines;
+  HttpHelper.fetchCuisines()
+    .then(res => {
+      self.cuisines = res;
       fillCuisinesHTML();
-    }
-  });
+    })
+    .catch(err => console.log(err));
 };
 
 /**
@@ -96,19 +90,12 @@ updateRestaurants = () => {
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
 
-  DBHelper.fetchRestaurantByCuisineAndNeighborhood(
-    cuisine,
-    neighborhood,
-    (error, restaurants) => {
-      if (error) {
-        // Got an error!
-        console.error(error);
-      } else {
-        resetRestaurants(restaurants);
-        fillRestaurantsHTML();
-      }
-    }
-  );
+  HttpHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
+    .then(res => {
+      resetRestaurants(res);
+      fillRestaurantsHTML();
+    })
+    .catch(err => console.log(err));
 };
 
 /**
@@ -146,12 +133,10 @@ createRestaurantHTML = restaurant => {
   const image = document.createElement("img");
   image.className = "restaurant-img";
   image.alt = `restaurant ${restaurant.name}`;
-  image.setAttribute("src", `/img/normal/${restaurant.photograph}`);
+  image.setAttribute("src", `/img/normal/${restaurant.id}.jpg`);
   image.setAttribute(
     "srcset",
-    `/img/small/${restaurant.photograph} 2x, /img/normal/${
-      restaurant.photograph
-    } 3x`
+    `/img/small/${restaurant.id}.jpg 2x, /img/normal/${restaurant.id}.jpg 3x`
   );
 
   li.append(image);
@@ -176,7 +161,7 @@ createRestaurantHTML = restaurant => {
   );
   // 2 is last tabIndex before restaurants list
   more.tabIndex = restaurant.id + 5;
-  more.href = DBHelper.urlForRestaurant(restaurant);
+  more.href = HttpHelper.urlForRestaurant(restaurant);
   li.append(more);
 
   return li;
@@ -188,7 +173,7 @@ createRestaurantHTML = restaurant => {
 addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
-    const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
+    const marker = HttpHelper.mapMarkerForRestaurant(restaurant, self.map);
     google.maps.event.addListener(marker, "click", () => {
       window.location.href = marker.url;
     });
