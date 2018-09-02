@@ -5,26 +5,25 @@ var map;
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) {
-      // Got an error!
-      console.error(error);
-    } else {
+  fetchRestaurantFromURL()
+    .then(res => {
+      self.restaurant = res;
       self.map = new google.maps.Map(document.getElementById("map"), {
         zoom: 16,
-        center: restaurant.latlng,
+        center: res.latlng,
         scrollwheel: false
       });
       fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
-  });
+
+      HttpHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+    })
+    .catch(err => console.log(err));
 };
 
 /**
  * Get current restaurant from page URL.
  */
-fetchRestaurantFromURL = callback => {
+fetchRestaurantFromURL = () => {
   return new Promise((resolve, reject) => {
     if (self.restaurant) {
       // restaurant already fetched!
@@ -37,38 +36,16 @@ fetchRestaurantFromURL = callback => {
       error = "No restaurant id in URL";
       reject(error);
     } else {
-      DBHelper.fetchRestaurantById(id)
+      HttpHelper.fetchRestaurantById(id)
         .then(res => {
           self.restaurant = res;
-          if (!restaurant) reject("error");
-          fillRestaurantHTML();
-          resolve(restaurant);
+          if (!res) reject("error");
+          fillRestaurantHTML(res);
+          resolve(res);
         })
         .catch(err => reject(err));
     }
   });
-
-  // if (self.restaurant) {
-  //   // restaurant already fetched!
-  //   callback(null, self.restaurant);
-  //   return;
-  // }
-  // const id = getParameterByName("id");
-  // if (!id) {
-  //   // no id found in URL
-  //   error = "No restaurant id in URL";
-  //   callback(error, null);
-  // } else {
-  //   DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-  //     self.restaurant = restaurant;
-  //     if (!restaurant) {
-  //       console.error(error);
-  //       return;
-  //     }
-  //     fillRestaurantHTML();
-  //     callback(null, restaurant);
-  //   });
-  // }
 };
 
 /**
@@ -87,12 +64,10 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   image.className = "restaurant-img";
   image.alt = `restaurant ${restaurant.name}`;
   image.setAttribute("aria-labelledby", "restaurant-img");
-  image.setAttribute("src", `/img/normal/${restaurant.photograph}`);
+  image.setAttribute("src", `/img/normal/${restaurant.id}.webp`);
   image.setAttribute(
     "srcset",
-    `/img/small/${restaurant.photograph} 2x, /img/normal/${
-      restaurant.photograph
-    } 3x`
+    `/img/small/${restaurant.id}.webp 2x, /img/normal/${restaurant.id}.webp 3x`
   );
 
   const cuisine = document.getElementById("restaurant-cuisine");

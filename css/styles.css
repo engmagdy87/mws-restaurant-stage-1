@@ -1,6 +1,15 @@
 @charset "utf-8";
 /* CSS Document */
 
+@font-face {
+  font-family: "Roboto";
+  font-display: auto;
+  src: local("Roboto"),
+    url(https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2),
+    url(https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2),
+    format("woff2");
+}
+
 body,
 td,
 th,

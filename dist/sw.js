@@ -1,4 +1,4 @@
-const newCacheName = "restaurants-v3";
+const newCacheName = "restaurants-v2";
 
 //  install new cache
 self.addEventListener("install", function(event) {
@@ -8,31 +8,32 @@ self.addEventListener("install", function(event) {
     "index.html",
     "restaurant.html",
     "css/styles.css",
-    "img/normal/1.webp",
-    "img/normal/2.webp",
-    "img/normal/3.webp",
-    "img/normal/4.webp",
-    "img/normal/5.webp",
-    "img/normal/6.webp",
-    "img/normal/7.webp",
-    "img/normal/8.webp",
-    "img/normal/9.webp",
-    "img/normal/10.webp",
-    "img/small/1.webp",
-    "img/small/2.webp",
-    "img/small/3.webp",
-    "img/small/4.webp",
-    "img/small/5.webp",
-    "img/small/6.webp",
-    "img/small/7.webp",
-    "img/small/8.webp",
-    "img/small/9.webp",
-    "img/small/10.webp",
+    // "data/restaurants.json",
+    "img/normal/1.jpg",
+    "img/normal/2.jpg",
+    "img/normal/3.jpg",
+    "img/normal/4.jpg",
+    "img/normal/5.jpg",
+    "img/normal/6.jpg",
+    "img/normal/7.jpg",
+    "img/normal/8.jpg",
+    "img/normal/9.jpg",
+    "img/normal/10.jpg",
+    "img/small/1.jpg",
+    "img/small/2.jpg",
+    "img/small/3.jpg",
+    "img/small/4.jpg",
+    "img/small/5.jpg",
+    "img/small/6.jpg",
+    "img/small/7.jpg",
+    "img/small/8.jpg",
+    "img/small/9.jpg",
+    "img/small/10.jpg",
+    // "js/dbhelper.js",
     "js/httpHelper.js",
     "js/idb.js",
     "js/main.js",
-    "js/restaurant_info.js",
-    "manifest.json"
+    "js/restaurant_info.js"
   ];
 
   //  create cache and add all files to it

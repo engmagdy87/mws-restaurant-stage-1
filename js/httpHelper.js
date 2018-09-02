@@ -1,3 +1,5 @@
+// import idb from "./idb.js";
+
 /**
  * Common database helper functions.
  */
@@ -19,9 +21,43 @@ class HttpHelper {
     return new Promise((resolve, reject) => {
       fetch(HttpHelper.getRestaurants)
         .then(res => res.json())
-        .then(data => resolve(data))
-        .catch(err => reject(`Request failed. Returned status of ${err}`));
+        .then(data => {
+          HttpHelper.saveInIDB(data);
+          resolve(data);
+        })
+        .catch(() => {
+          const dbPromise = idb.open("restaurants-store", 1, () => {});
+          dbPromise
+            .then(db => {
+              let tx = db.transaction("restaurants");
+              let store = tx.objectStore("restaurants");
+
+              return store.getAll();
+            })
+            .then(restaurants => {
+              resolve(restaurants);
+            })
+            .catch(err => reject(`Request failed. Returned status of ${err}`));
+        });
     });
+  }
+
+  static saveInIDB(data) {
+    const dbPromise = idb.open("restaurants-store", 1, upgradeDB => {
+      upgradeDB.createObjectStore("restaurants", { keyPath: "id" });
+    });
+    dbPromise
+      .then(db => {
+        let tx = db.transaction("restaurants", "readwrite");
+        let store = tx.objectStore("restaurants");
+
+        data.map(restaurant => store.put(restaurant));
+
+        return tx.complete;
+      })
+      .then(() => {
+        console.log("finish writing data");
+      });
   }
 
   /**
@@ -33,6 +69,7 @@ class HttpHelper {
       HttpHelper.fetchRestaurants()
         .then(res => {
           const restaurant = res.find(r => r.id == id);
+
           if (restaurant) {
             // Got the restaurant
             resolve(restaurant);

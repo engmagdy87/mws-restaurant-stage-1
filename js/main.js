@@ -133,10 +133,10 @@ createRestaurantHTML = restaurant => {
   const image = document.createElement("img");
   image.className = "restaurant-img";
   image.alt = `restaurant ${restaurant.name}`;
-  image.setAttribute("src", `/img/normal/${restaurant.id}.jpg`);
+  image.setAttribute("src", `/img/normal/${restaurant.id}.webp`);
   image.setAttribute(
     "srcset",
-    `/img/small/${restaurant.id}.jpg 2x, /img/normal/${restaurant.id}.jpg 3x`
+    `/img/small/${restaurant.id}.webp 2x, /img/normal/${restaurant.id}.webp 3x`
   );
 
   li.append(image);
